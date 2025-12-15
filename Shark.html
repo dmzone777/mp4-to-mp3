@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MP4 to MP3 Converter</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#0f172a; color:#e5e7eb; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+    .card { background:#020617; padding:20px; border-radius:14px; width:100%; max-width:420px; box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    h1 { font-size:20px; margin-bottom:10px; text-align:center; }
+    p { font-size:13px; opacity:.8; text-align:center; }.file-box{
+  display:block;
+  text-align:center;
+  padding:22px;
+  margin:16px 0;
+  border-radius:14px;
+  border:2px dashed #22c55e;
+  background:rgba(34,197,94,0.08);
+  color:#4ade80;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(34,197,94,0.3);
+  transition:all .3s ease;
+}
+.file-box:hover{
+  background:rgba(34,197,94,0.15);
+  box-shadow:0 0 30px rgba(34,197,94,0.7);
+  transform:scale(1.02);
+}
+
+button {
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#22c55e,#4ade80,#22c55e);
+  color:#052e16;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 0 15px rgba(34,197,94,0.6);
+  transition: all .3s ease;
+  animation: glow 2s infinite alternate;
+}
+button:hover{
+  transform: scale(1.03);
+  box-shadow:0 0 25px rgba(34,197,94,0.9);
+}
+button:disabled { background:#475569; cursor:not-allowed; animation:none; }
+
+.log { margin-top:10px; font-size:12px; white-space:pre-wrap; }
+footer { margin-top:12px; font-size:11px; text-align:center; opacity:.6; }
+
+@keyframes glow{
+  from{ box-shadow:0 0 10px rgba(34,197,94,0.4); }
+  to{ box-shadow:0 0 25px rgba(34,197,94,0.9); }
+}
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>MP4 → MP3 Converter</h1>
+    <p>Browser-based demo (No upload to server)</p>
+    <label for="video" class="file-box">📁 Choose MP4 File</label>
+    <input type="file" id="video" accept="video/mp4" hidden />
+    <button id="convert">Convert to MP3</button>
+    <div class="log" id="log"></div>
+    <footer>© Demo Tool</footer>
+  </div>  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/ffmpeg.min.js"></script>  <script>
+    const { FFmpeg } = FFmpegWASM;
+    const ffmpeg = new FFmpeg();
+
+    const logEl = document.getElementById('log');
+    const btn = document.getElementById('convert');
+
+    function log(msg){ logEl.textContent += msg + "\n"; }
+
+    btn.onclick = async () => {
+      const fileInput = document.getElementById('video');
+      if(!fileInput.files.length){ alert('MP4 file select karo'); return; }
+
+      btn.disabled = true;
+      log('Loading FFmpeg...');
+      await ffmpeg.load({ coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/ffmpeg-core.js' });
+
+      const file = fileInput.files[0];
+      log('File added: ' + file.name);
+
+      await ffmpeg.writeFile('input.mp4', await fetchFile(file));
+      log('Converting...');
+
+      await ffmpeg.exec(['-i', 'input.mp4', 'output.mp3']);
+
+      const data = await ffmpeg.readFile('output.mp3');
+      const url = URL.createObjectURL(new Blob([data.buffer], { type: 'audio/mpeg' }));
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'audio.mp3';
+      a.click();
+
+      log('Done! MP3 downloaded.');
+      btn.disabled = false;
+    };
+
+    async function fetchFile(file){ return new Uint8Array(await file.arrayBuffer()); }
+  </script></body>
+</html>
