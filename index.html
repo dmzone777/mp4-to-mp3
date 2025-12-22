@@ -1,10 +1,16 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <!-- 🔍 SEO -->  <title>Sound Speed Controller Online – Change Audio Speed & Download</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 🔍 SEO -->
+  <title>Sound Speed Controller Online – Change Audio Speed & Download</title>
   <meta name="description" content="Free online sound speed controller. Change audio playback speed, listen instantly and download the modified audio. Works on mobile & desktop.">
   <meta name="keywords" content="sound speed controller, audio speed changer, mp3 speed changer, change audio speed online">
-  <meta name="robots" content="index, follow">  <style>
+  <meta name="robots" content="index, follow">
+
+  <style>
     body{
       margin:0;
       font-family:Arial, sans-serif;
@@ -15,6 +21,7 @@
       justify-content:center;
       min-height:100vh;
     }
+
     .card{
       background:#020617;
       padding:22px;
@@ -23,6 +30,19 @@
       max-width:420px;
       box-shadow:0 0 40px rgba(34,197,94,.35);
     }
+
+    /* LOGO */
+    .logo{
+      text-align:center;
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:2px;
+      margin-bottom:10px;
+      color:#22c55e;
+      text-shadow:0 0 15px rgba(34,197,94,0.9);
+    }
+    .logo span{ color:#4ade80; }
+
     h1{
       text-align:center;
       font-size:20px;
@@ -33,6 +53,7 @@
       font-size:13px;
       opacity:.8;
     }
+
     .file-box{
       display:block;
       text-align:center;
@@ -50,28 +71,21 @@
       box-shadow:0 0 25px rgba(34,197,94,.7);
       transform:scale(1.02);
     }
-    audio{
-      width:100%;
-      margin-top:10px;
-    }
-    .speed{
-      margin-top:16px;
-    }
-    .speed label{
-      display:block;
-      margin-bottom:6px;
-      text-align:center;
-    }
-    input[type=range]{
-      width:100%;
-      accent-color:#22c55e;
-    }
+
+    audio{ width:100%; margin-top:10px; }
+
+    .speed{ margin-top:16px; }
+    .speed label{ display:block; margin-bottom:6px; text-align:center; }
+
+    input[type=range]{ width:100%; accent-color:#22c55e; }
+
     .value{
       text-align:center;
       margin-top:6px;
       font-weight:bold;
       color:#4ade80;
     }
+
     button{
       margin-top:14px;
       width:100%;
@@ -84,13 +98,33 @@
       cursor:pointer;
       box-shadow:0 0 18px rgba(34,197,94,.6);
     }
+
     footer{
       text-align:center;
       font-size:11px;
       opacity:.6;
       margin-top:14px;
     }
-  </style>  <!-- 🧠 SCRIPT IN HEAD -->  <script>
+
+    /* FAQ */
+    .faq{ margin-top:20px; font-size:13px; }
+    .faq-item{
+      margin-top:12px;
+      padding:12px;
+      background:#020617;
+      border-radius:10px;
+      box-shadow:0 0 15px rgba(34,197,94,.15);
+    }
+    .faq-item h3{
+      margin:0 0 6px;
+      font-size:14px;
+      color:#4ade80;
+    }
+    .faq-item p{ margin:0; opacity:.85; }
+  </style>
+
+  <!-- SCRIPT -->
+  <script>
     let audio, fileInput, speed, speedValue;
     let audioBuffer;
 
@@ -116,11 +150,8 @@
         speedValue.textContent = speed.value + 'x';
       });
 
-      document.getElementById('downloadBtn')
-        .addEventListener('click', downloadAudio);
-
-      document.getElementById('resetBtn')
-        .addEventListener('click', resetSpeed);
+      document.getElementById('downloadBtn').addEventListener('click', downloadAudio);
+      document.getElementById('resetBtn').addEventListener('click', resetSpeed);
     });
 
     async function loadBuffer(file){
@@ -130,10 +161,7 @@
     }
 
     async function downloadAudio(){
-      if(!audioBuffer){
-        alert('Please select audio first');
-        return;
-      }
+      if(!audioBuffer){ alert('Please select audio first'); return; }
       const rate = audio.playbackRate;
       const offlineCtx = new OfflineAudioContext(
         audioBuffer.numberOfChannels,
@@ -189,30 +217,62 @@
       speed.value = 1;
       speedValue.textContent = '1.0x';
     }
-  </script></head>
+  </script>
+</head>
+
 <body>
   <main class="card">
+
+    <div class="logo">DMZONE<span>777</span></div>
+
     <h1>Sound Speed Controller</h1>
-    <p>Change audio speed online & download modified file</p><label for="audioFile" class="file-box">📁 Choose Audio File</label>
-<input type="file" id="audioFile" accept="audio/*" hidden>
+    <p>Change audio speed online & download modified file</p>
 
-<audio id="audio" controls></audio>
+    <label for="audioFile" class="file-box">📁 Choose Audio File</label>
+    <input type="file" id="audioFile" accept="audio/*" hidden>
 
-<div class="speed">
-  <label>Playback Speed</label>
-  <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
-  <div class="value" id="speedValue">1.0x</div>
-</div>
+    <audio id="audio" controls></audio>
 
-<button id="resetBtn">Reset Speed</button>
-<button id="downloadBtn">⬇️ Download Audio</button>
+    <div class="speed">
+      <label>Playback Speed</label>
+      <input type="range" id="speed" min="0.5" max="2" step="0.1" value="1">
+      <div class="value" id="speedValue">1.0x</div>
+    </div>
 
-<footer>
-  Free Online Sound Speed Controller
-</footer>
+    <button id="resetBtn">Reset Speed</button>
+    <button id="downloadBtn">⬇️ Download Audio</button>
 
-  </main><br><footer style="text-align:center; margin-top:20px;">
-  <a href="privacy.html" style="color:#4ade80;">Privacy Policy</a>
-</footer>
+    <!-- FAQ -->
+    <section class="faq">
+      <h2 style="text-align:center;color:#22c55e;">FAQ</h2>
+
+      <div class="faq-item">
+        <h3>Is this sound speed controller free?</h3>
+        <p>Yes, this tool is completely free and works directly in your browser.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Is my audio file safe?</h3>
+        <p>Your audio is processed locally in your browser and never uploaded.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Can I use this on mobile?</h3>
+        <p>Yes, it works on mobile phones, tablets, and desktop browsers.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3>Which formats are supported?</h3>
+        <p>MP3, WAV, and most browser-supported audio formats.</p>
+      </div>
+    </section>
+
+    <footer>Free Online Sound Speed Controller</footer>
+  </main>
+
+  <footer style="text-align:center;margin-top:20px;">
+    <a href="privacy.html" style="color:#4ade80;">Privacy Policy</a>
+  </footer>
+
 </body>
-  </html>
+</html>
